@@ -109,25 +109,25 @@ def simulate_generator(symbol, horizon_key, sims):
         suggestion = "指標呈現混合訊號，建議先觀望並待趨勢及動能訊號更為明確後再行操作。"
 
    commentary_html = f"""
-<div style='font-size:1rem; line-height:1.5;'>{some_variable}</div>
-<h4>公司產業與業務</h4>
-<p>該公司屬於 <strong>{industry}</strong> 產業，主要業務：{summary}</p>
-<h4>模擬走勢總結</h4>
-<ul>
-  <li>預測未來股價平均約為 <strong>{avg_price:.2f} 元</strong>。</li>
-  <li>目前股價：{current_price:.2f} 元；預測範圍：{min_price:.2f}-{max_price:.2f} 元。</li>
-  <li>波動度：{vol:.2f} 元 ({vol_pct:.2f}%)。</li>
-</ul>
-<h4>指標解讀</h4>
-<ul>
-  <li>20日MA={ma20:.2f}, 50日MA={ma50:.2f} => 趨勢偏{"多頭" if ma20>ma50 else "空頭"}。</li>
-  <li>RSI(14)={rsi14:.2f} => {"過熱(>70)易回檔" if rsi14>70 else ("超賣(<30)易反彈" if rsi14<30 else "中性穩定")}</li>
-  <li>MACD柱狀圖={macd_hist:.4f} => {"正值，多頭動能" if macd_hist>0 else "負值，空頭動能"}</li>
-</ul>
-<h4>建議</h4>
-<ul>
-  <li>建議…</li>
-</ul>
+    <div style='font-size:1rem; line-height:1.5;'>{some_variable}</div>
+    <h4>公司產業與業務</h4>
+    <p>該公司屬於 <strong>{industry}</strong> 產業，主要業務：{summary}</p>
+    <h4>模擬走勢總結</h4>
+    <ul>
+      <li>預測未來股價平均約為 <strong>{avg_price:.2f} 元</strong>。</li>
+      <li>目前股價：{current_price:.2f} 元；預測範圍：{min_price:.2f}-{max_price:.2f} 元。</li>
+      <li>波動度：{vol:.2f} 元 ({vol_pct:.2f}%)。</li>
+    </ul>
+    <h4>指標解讀</h4>
+    <ul>
+      <li>20日MA={ma20:.2f}, 50日MA={ma50:.2f} => 趨勢偏{"多頭" if ma20>ma50 else "空頭"}。</li>
+      <li>RSI(14)={rsi14:.2f} => {"過熱(>70)易回檔" if rsi14>70 else ("超賣(<30)易反彈" if rsi14<30 else "中性穩定")}</li>
+      <li>MACD柱狀圖={macd_hist:.4f} => {"正值，多頭動能" if macd_hist>0 else "負值，空頭動能"}</li>
+    </ul>
+    <h4>建議</h4>
+    <ul>
+      <li>建議…</li>
+    </ul>
 # 再把 li 加上去
 commentary_html += f"<li>20日MA與50日MA顯示趨勢偏{small_trend}，主趨勢{main_trend}。</li>"
 

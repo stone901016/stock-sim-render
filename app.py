@@ -108,49 +108,55 @@ def simulate_generator(symbol, horizon_key, sims):
     else:
         suggestion = "指標呈現混合訊號，建議先觀望並待趨勢及動能訊號更為明確後再行操作。"
 
+       # 自動產生具體操作建議
+    if ma20 > ma50 and macd_hist > 0 and rsi14 < 70:
+        suggestion = "趨勢偏多: 建議於股價回檔至20日均線附近分批買入，並依當前多頭動能保持持有。"
+    elif ma20 > ma50 and rsi14 >= 70:
+        suggestion = "雖多頭趨勢明顯，但 RSI 過熱，建議等待股價整理或回檔至均線位置再分批布局。"
+    elif ma20 < ma50 and macd_hist < 0:
+        suggestion = "趨勢轉空: 建議於股價反彈至20日均線時分批賣出或觀望以控制風險。"
+    else:
+        suggestion = "指標呈現混合訊號，建議先觀望並待趨勢及動能訊號更為明確後再行操作。"
+
+    # 小趨勢文字
+    small_trend = "多頭" if ma20 > ma50 else "空頭"
+    main_trend  = "向上" if ma20 > ma50 else "向下"
+
+    # 組 HTML
     commentary_html = f"""
-    <div style='font-size:1rem; line-height:1.5;'>{some_variable}</div>
-    <h4>公司產業與業務</h4>
-    <p>該公司屬於 <strong>{industry}</strong> 產業，主要業務：{summary}</p>
-    <h4>模擬走勢總結</h4>
-    <ul>
-      <li>預測未來股價平均約為 <strong>{avg_price:.2f} 元</strong>。</li>
-      <li>目前股價：{current_price:.2f} 元；預測範圍：{min_price:.2f}-{max_price:.2f} 元。</li>
-      <li>波動度：{vol:.2f} 元 ({vol_pct:.2f}%)。</li>
-    </ul>
-    <h4>指標解讀</h4>
-    <ul>
-      <li>20日MA={ma20:.2f}, 50日MA={ma50:.2f} => 趨勢偏{"多頭" if ma20>ma50 else "空頭"}。</li>
-      <li>RSI(14)={rsi14:.2f} => {"過熱(>70)易回檔" if rsi14>70 else ("超賣(<30)易反彈" if rsi14<30 else "中性穩定")}</li>
-      <li>MACD柱狀圖={macd_hist:.4f} => {"正值，多頭動能" if macd_hist>0 else "負值，空頭動能"}</li>
-    </ul>
-    <h4>建議</h4>
-    <ul>
-      <li>建議…</li>
-    </ul>
-# 再把 li 加上去
-commentary_html += f"<li>20日MA與50日MA顯示趨勢偏{small_trend}，主趨勢{main_trend}。</li>"
+<div style='font-size:1rem; line-height:1.5;'>
+  <h4>公司產業與業務</h4>
+  <p>該公司屬於 <strong>{industry}</strong> 產業，主要業務：{summary}</p>
+  <h4>模擬走勢總結</h4>
+  <ul>
+    <li>預測未來股價平均約為 <strong>{avg_price:.2f} 元</strong>。</li>
+    <li>目前股價：{current_price:.2f} 元；預測範圍：{min_price:.2f}–{max_price:.2f} 元。</li>
+    <li>波動度：{vol:.2f} 元 ({vol_pct:.2f}%)。</li>
+  </ul>
+  <h4>指標解讀</h4>
+  <ul>
+    <li>20日MA={ma20:.2f}, 50日MA={ma50:.2f} ⇒ 趨勢偏{"多頭" if ma20>ma50 else "空頭"}。</li>
+    <li>RSI(14)={rsi14:.2f} ⇒ {"過熱(>70)易回檔" if rsi14>70 else ("超賣(<30)易反彈" if rsi14<30 else "中性穩定")}</li>
+    <li>MACD柱狀圖={macd_hist:.4f} ⇒ {"正值，多頭動能" if macd_hist>0 else "負值，空頭動能"}</li>
+  </ul>
+  <h4>具體建議</h4>
+  <ul>
+    <li>20日MA與50日MA顯示趨勢偏{small_trend}，主趨勢{main_trend}。</li>
+    <li>RSI(14)={rsi14:.2f}，{"過熱" if rsi14>70 else ("超賣" if rsi14<30 else "中性")}，{"可能回檔" if rsi14>70 else ("可能反彈" if rsi14<30 else "趨勢穩定")}。</li>
+    <li>MACD柱狀圖={macd_hist:.4f}，{"多頭動能" if macd_hist>0 else "空頭動能"}較強。</li>
+    <li>{suggestion}</li>
+  </ul>
+</div>
+"""
 
-        f"<li>RSI(14)={rsi14:.2f}，{ "過熱" if rsi14>70 else ("超賣" if rsi14<30 else "中性") }，{ "注意可能回檔" if rsi14>70 else ("可能反彈" if rsi14<30 else "趨勢穩定") }。</li>"
-        f"<li>MACD柱狀圖={macd_hist:.4f}，{ "多頭動能" if macd_hist>0 else "空頭動能" }較強。</li>"
-       # 技術指標判斷後的交易建議
-if ma20 > ma50 and macd_hist > 0:
-    advice = "建議逢低分批買入，並於突破近期高點時加碼；如跌破下方支撐，考慮停損出場。"
-elif ma20 < ma50 and macd_hist < 0:
-    advice = "建議逢高出脫，並於關鍵支撐反彈時再進場。"
-else:
-    advice = "建議維持觀望，待指標趨勢更明確後再行操作。"
-
-commentary_html += f"<li>{advice}</li>"
-
-        f"</ul>"
-        f"</div>"
-    )
-
-    result = {"plot_img": f"data:image/png;base64,{plot_img}",
-              "hist_data": finals.tolist(),
-              "commentary_html": commentary_html}
+    # 最後組成回傳的 result
+    result = {
+        "plot_img": f"data:image/png;base64,{plot_img}",
+        "hist_data": finals.tolist(),
+        "commentary_html": commentary_html
+    }
     yield f"data: {json.dumps(result)}\n\n"
+
 
 @app.route("/")
 def index():

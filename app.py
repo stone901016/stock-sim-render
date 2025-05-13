@@ -109,7 +109,7 @@ def simulate_generator(symbol, horizon_key, sims):
         suggestion = "指標呈現混合訊號，建議先觀望並待趨勢及動能訊號更為明確後再行操作。"
 
     commentary_html = (
-        f"<div style='font-size:1rem; line-height:1.5;'>"
+        f"<div style='font-size:1rem; line-height:1.5;'>{some_variable}</div>"
         f"<h4>公司產業與業務</h4>"
         f"<p>該公司屬於 <strong>{industry}</strong> 產業，主要業務：{summary}</p>"
         f"<h4>模擬走勢總結</h4>"

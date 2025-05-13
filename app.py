@@ -126,7 +126,13 @@ def simulate_generator(symbol, horizon_key, sims):
         f"</ul>"
         f"<h4>建議</h4>"
         f"<ul>"
-        f"<li>20日MA與50日MA顯示趨勢偏{"多頭" if ma20>ma50 else "空頭"}，主趨勢{ "向上" if ma20>ma50 else "向下" }。</li>"
+        # 先決定文字
+small_trend = "多頭" if ma20 > ma50 else "空頭"
+main_trend  = "向上" if ma20 > ma50 else "向下"
+
+# 再把 li 加上去
+commentary_html += f"<li>20日MA與50日MA顯示趨勢偏{small_trend}，主趨勢{main_trend}。</li>"
+
         f"<li>RSI(14)={rsi14:.2f}，{ "過熱" if rsi14>70 else ("超賣" if rsi14<30 else "中性") }，{ "注意可能回檔" if rsi14>70 else ("可能反彈" if rsi14<30 else "趨勢穩定") }。</li>"
         f"<li>MACD柱狀圖={macd_hist:.4f}，{ "多頭動能" if macd_hist>0 else "空頭動能" }較強。</li>"
        # 技術指標判斷後的交易建議
